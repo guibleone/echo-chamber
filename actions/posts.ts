@@ -168,9 +168,12 @@ export async function createComment(
     
     
   } catch (error) {
-    throw new Error("Erro ao criar comentário");
+    return{
+      error: "Erro ao criar comentário"
+    }
     
   }
 
   revalidateTag("posts");
+  redirect(`/posts/${postId}`);
 }

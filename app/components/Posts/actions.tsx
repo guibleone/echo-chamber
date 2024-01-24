@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { BiConversation, BiHeart } from "react-icons/bi";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -11,13 +12,28 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import { likePost } from "@/actions/posts";
-import { useFormStatus } from "react-dom";
+import { createComment, likePost } from "@/actions/posts";
+import { useFormState, useFormStatus } from "react-dom";
 import { cn } from "@/lib/utils";
+import { toast } from "@/components/ui/use-toast";
 
 export default function Actions({ post }: { post: any }) {
   const { data: session } = useSession();
   const user = session?.user;
+
+  const initialState = { message: null, error: null };
+  const commentWithId = createComment.bind(null, post.id);
+  // @ts-ignore
+  const [state, dispatch] = useFormState(commentWithId, initialState);
+
+  useEffect(() => {
+    if (state?.error) {
+      toast({
+        title: "Erro ao comentar",
+        description: state.error,
+      });
+    }
+  }, [state]);
 
   return (
     <div className="flex gap-3 text-sm">
@@ -32,27 +48,29 @@ export default function Actions({ post }: { post: any }) {
           </p>
         </DialogTrigger>
         <DialogContent className="max-w-[330px] sm:max-w-lg">
-          <DialogHeader>
-            <DialogTitle className="flex items-center">
-              <textarea
-                rows={5}
-                placeholder="Comente algo"
-                className="w-full p-2 placeholder:truncate placeholder:text-sm sm:text-md text-sm truncate bg-transparent text-muted-foreground sm:placeholder:text-md placeholder:text-muted-foreground focus:outline-none"
-              />
-            </DialogTitle>
-          </DialogHeader>
-          <DialogDescription className="ml-auto mt-5">
-            <Button disabled={!session} size={"sm"}>
-              Comentar
-            </Button>
-          </DialogDescription>
+          <form className="flex flex-col" action={dispatch}>
+            <DialogHeader>
+              <DialogTitle className="flex items-center">
+                <textarea
+                  name="content"
+                  rows={5}
+                  placeholder="Comente algo"
+                  className="w-full p-2 placeholder:truncate placeholder:text-sm sm:text-md text-sm truncate bg-transparent text-muted-foreground sm:placeholder:text-md placeholder:text-muted-foreground focus:outline-none"
+                />
+              </DialogTitle>
+            </DialogHeader>
+            <DialogDescription className="ml-auto mt-5">
+              <DialogClose>
+                <SubmitComment session={session} />
+              </DialogClose>
+            </DialogDescription>
+          </form>
         </DialogContent>
       </Dialog>
 
       <form action={() => likePost(post.id)}>
         <Submit post={post} userId={user?.id!} />
       </form>
-
     </div>
   );
 }
@@ -65,15 +83,25 @@ function Submit({ post, userId }: { post: any; userId: string }) {
 
   return (
     <button
+      disabled={!userId || pending}
       className={cn(
-        pending && "cursor-not-allowed opacity-50",
-        isUserLiked ? "text-destructive" : "hover:text-destructive",
-       
+        (pending || !userId) && "cursor-not-allowed opacity-50",
+        isUserLiked ? "text-destructive" : "hover:text-destructive"
       )}
     >
       <div className="flex items-center gap-2">
         <BiHeart /> {!post?.likes?.length ? "0" : post?.likes?.length} Curtidas
       </div>
     </button>
+  );
+}
+
+function SubmitComment({ session }: { session: any }) {
+  const { pending } = useFormStatus();
+
+  return (
+    <Button disabled={pending || !session} size={"sm"}>
+      Comentar
+    </Button>
   );
 }

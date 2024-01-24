@@ -3,9 +3,18 @@ import DarkModeButton from "@/components/buttons/dark-mode-button";
 import { LogoutButton } from "@/components/buttons/login";
 import MaxWidthWrapper from "@/components/max-width-warpper";
 import Search from "@/components/search-input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import React from "react";
+import { FaUser } from "react-icons/fa";
 
 const links = [
   {
@@ -46,7 +55,31 @@ export default async function Navbar() {
                 <Link href="/login">Entrar</Link>
               </Button>
             ) : (
-              <LogoutButton />
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar>
+                    <AvatarImage src={user.image!} />
+                    <AvatarFallback>NM</AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                
+                  <DropdownMenuItem className="w-full">
+                    <Link href={`/user/${user.id}`}>
+                      <div className="flex gap-2 items-center">
+                      <FaUser /> 
+                      <p className="text-sm font-medium">
+                        Perfil
+                      </p>
+                      </div>
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+              
+                    <LogoutButton />
+             
+                </DropdownMenuContent>
+              </DropdownMenu>
             )}
 
             <DarkModeButton />

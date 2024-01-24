@@ -28,7 +28,7 @@ export const GoogleButton = () => {
 
 export const LogoutButton = () => {
   return (
-    <Button onClick={() => signOut()}>
+    <Button size={'sm'} className="w-full h-8" onClick={() => signOut()}>
       <div className="flex items-center gap-4">Sair</div>
     </Button>
   );

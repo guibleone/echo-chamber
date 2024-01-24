@@ -70,6 +70,9 @@ export const fetchComments = async (postId: string, page: number) => {
     include:{
       author: true,
     },
+    orderBy:{
+      createdAt: "desc"
+    },
     skip: (page - 1) * 10,
     take: 10,
   });

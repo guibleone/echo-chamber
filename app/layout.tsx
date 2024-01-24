@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Footer from "./components/Footer";
 import MaxWidthWrapper from "@/components/max-width-warpper";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/toaster"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -36,6 +37,7 @@ export default function RootLayout({
             <div className="flex-1">
               <Navbar />
               <MaxWidthWrapper className="max-w-screen-md">{children}</MaxWidthWrapper>
+              <Toaster />
             </div>
 
             <Footer />

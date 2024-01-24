@@ -8,7 +8,10 @@ import CommentsInput from "./comment-input";
 import CommentsSection from "@/components/comments";
 import { formatDateTimeWithTime } from "@/lib/utils";
 import DeleteButton from "@/components/buttons/delete-button";
+import { getCurrentUser } from "@/actions/data";
 export default async function SinglePost({ post }: { post: any }) {
+  const user = await getCurrentUser();
+
   return (
     <div className="flex flex-col py-5 gap-2">
       <div className="flex items-center gap-2">
@@ -24,7 +27,7 @@ export default async function SinglePost({ post }: { post: any }) {
         </Avatar>
         <div className="flex gap-2 justify-between w-full">
           <p className="text-sm ">{post.author.name} </p>
-          <DeleteButton id={post.id} />
+          {user?.id === post.author.id && <DeleteButton id={post.id} />}
         </div>
       </div>
       <div className="mt-4">{post.content}</div>
