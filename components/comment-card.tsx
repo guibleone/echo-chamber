@@ -26,7 +26,7 @@ export default function CommentCard({
       initial="initial"
       animate="animate"
       transition={{
-        delay: 0.2 * index,
+        delay: 0.1 * index,
         duration: 0.2,
         ease: "easeInOut",
       }}

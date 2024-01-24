@@ -19,7 +19,6 @@ import { toast } from "@/components/ui/use-toast";
 
 export default function Actions({ post }: { post: any }) {
   const { data: session } = useSession();
-  const user = session?.user;
 
   const initialState = { message: null, error: null };
   const commentWithId = createComment.bind(null, post.id);
@@ -69,11 +68,12 @@ export default function Actions({ post }: { post: any }) {
       </Dialog>
 
       <form action={() => likePost(post.id)}>
-        <Submit post={post} userId={user?.id!} />
+        <Submit post={post} userId={session?.user?.id!} />
       </form>
     </div>
   );
 }
+
 
 /* TODO: add useOptmistic from react to lie button in a new component */
 
@@ -83,9 +83,9 @@ function Submit({ post, userId }: { post: any; userId: string }) {
 
   return (
     <button
-      disabled={!userId || pending}
+      disabled={pending}
       className={cn(
-        (pending || !userId) && "cursor-not-allowed opacity-50",
+        pending && "cursor-not-allowed opacity-50",
         isUserLiked ? "text-destructive" : "hover:text-destructive"
       )}
     >

@@ -1,20 +1,43 @@
 "use client";
 import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { BiConversation, BiHeart } from "react-icons/bi";
 import Actions from "./actions";
-import { useRouter } from "next/navigation";
 import { formatDateTime } from "@/lib/utils";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-export default function PostCard({ post }: { post: any }) {
-  const router = useRouter();
-  const onClickPost = () => {
-    router.push(`/posts/${post.id}`);
-  };
+const variants = {
+  initial: {
+    opacity: 0,
+  },
+  animate: {
+    opacity: 1,
+  },
+};
 
+export default function PostCard({
+  post,
+  index,
+}: {
+  post: any;
+  index: number;
+}) {
   return (
-    <div className="hover:cursor-pointer border px-6 py-5">
-      <div onClick={onClickPost}>
+    <motion.div
+      variants={variants}
+      initial="initial"
+      animate="animate"
+      transition={{
+        delay: 0.1 * index,
+        duration: 0.2,
+        ease: "easeInOut",
+      }}
+      className="flex flex-col"
+    >
+      <Link
+        className="hover:cursor-pointer border px-6 py-5"
+        href={`/posts/${post.id}`}
+      >
         <div className="flex gap-2 ">
           <Avatar>
             <AvatarImage src={post.author.image} />
@@ -31,10 +54,10 @@ export default function PostCard({ post }: { post: any }) {
             <h2 className="text-sm line-clamp-3">{post.content}</h2>
           </div>
         </div>
-      </div>
-      <div className="flex justify-center mt-4 sm:justify-end">
+      </Link>
+      <div className="flex justify-center mt-4 sm:justify-end mb-4">
         <Actions post={post} />
       </div>
-    </div>
+    </motion.div>
   );
 }

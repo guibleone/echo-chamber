@@ -1,20 +1,20 @@
 "use client";
-import { fetchComments } from "@/actions/data";
+import { fetchPosts } from "@/actions/data";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
-export type CommentCard = JSX.Element;
+export type PostCard = JSX.Element;
 
-export default function LoadMore({ postId }: { postId: string }) {
+export default function LoadMorePosts() {
   const [page, setPage] = useState(2);
   const { ref, inView } = useInView();
-  const [data, setData] = useState<CommentCard[]>([]);
+  const [data, setData] = useState<PostCard[]>([]);
   const [isEmpty, setIsEmpty] = useState(false);
 
   useEffect(() => {
     if (inView) {
-      fetchComments(postId, page).then((res) => {
+      fetchPosts(page).then((res) => {
         if (res.length === 0) {
           setIsEmpty(true);
           return;
@@ -23,7 +23,7 @@ export default function LoadMore({ postId }: { postId: string }) {
         setPage(page + 1);
       });
     }
-  }, [inView, data, postId, page]);
+  }, [inView, data, page]);
 
   return (
     <>
@@ -51,7 +51,7 @@ export default function LoadMore({ postId }: { postId: string }) {
           </div>
         )}
         {isEmpty && (
-          <p className="text-muted-foreground">Não há mais comentários</p>
+          <p className="text-muted-foreground">Não há mais posts. Crie um!</p>
         )}
       </section>
     </>
