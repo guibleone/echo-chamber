@@ -1,6 +1,7 @@
 "use client";
 import { fetchPosts } from "@/actions/data";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { useInView } from "react-intersection-observer";
 
@@ -12,9 +13,13 @@ export default function LoadMorePosts() {
   const [data, setData] = useState<PostCard[]>([]);
   const [isEmpty, setIsEmpty] = useState(false);
 
+  const searchParams = useSearchParams();
+
+  const query = searchParams.get('orderBy')?.toString() === "likes" ? true : false;
+
   useEffect(() => {
     if (inView) {
-      fetchPosts(page).then((res) => {
+      fetchPosts(page,query).then((res) => {
         if (res.length === 0) {
           setIsEmpty(true);
           return;
@@ -23,7 +28,7 @@ export default function LoadMorePosts() {
         setPage(page + 1);
       });
     }
-  }, [inView, data, page]);
+  }, [inView, data, page, query]);
 
   return (
     <>
