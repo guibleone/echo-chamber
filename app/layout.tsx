@@ -35,11 +35,9 @@ export default function RootLayout({
         >
           <SessionProvider>
             <div className="flex-1">
-              <Navbar />
-              <MaxWidthWrapper className="max-w-screen-md">{children}</MaxWidthWrapper>
+              <MaxWidthWrapper>{children}</MaxWidthWrapper>
               <Toaster />
             </div>
-
             <Footer />
           </SessionProvider>
         </ThemeProvider>

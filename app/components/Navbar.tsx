@@ -1,8 +1,9 @@
+import { fetchSearchResults } from "@/actions/data";
 import { auth } from "@/auth";
 import DarkModeButton from "@/components/buttons/dark-mode-button";
 import { LogoutButton } from "@/components/buttons/login";
 import MaxWidthWrapper from "@/components/max-width-warpper";
-import Search from "@/components/search-input";
+import Search from "@/components/search";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,9 +24,11 @@ const links = [
   },
 ];
 
-export default async function Navbar() {
+export default async function Navbar({ query }: { query?: string  }) {
   const session = await auth();
   const user = session?.user;
+
+  const { posts, users } = await fetchSearchResults(query!);
 
   return (
     <nav className="py-5 border-b">
@@ -49,7 +52,7 @@ export default async function Navbar() {
           </Link>
 
           <div className="flex gap-3">
-            <Search />
+            <Search posts={posts} users={users} />
             {!user ? (
               <Button size={"sm"} asChild>
                 <Link href="/login">Entrar</Link>
@@ -63,21 +66,17 @@ export default async function Navbar() {
                   </Avatar>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
-                
                   <DropdownMenuItem className="w-full">
                     <Link href={`/user/${user.id}`}>
                       <div className="flex gap-2 items-center">
-                      <FaUser /> 
-                      <p className="text-sm font-medium">
-                        Perfil
-                      </p>
+                        <FaUser />
+                        <p className="text-sm font-medium">Perfil</p>
                       </div>
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
-              
-                    <LogoutButton />
-             
+
+                  <LogoutButton />
                 </DropdownMenuContent>
               </DropdownMenu>
             )}

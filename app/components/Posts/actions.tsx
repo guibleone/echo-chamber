@@ -74,11 +74,30 @@ export default function Actions({ post }: { post: any }) {
   );
 }
 
-
 /* TODO: add useOptmistic from react to lie button in a new component */
 
 function Submit({ post, userId }: { post: any; userId: string }) {
   const { pending } = useFormStatus();
+
+/*   if (!userId) {
+    return (
+      <button
+        onClick={() => {
+          toast({
+            title: "Erro ao curtir",
+            description: "Por favor, faça login para curtir o post.",
+          });
+        }}
+        className="text-muted-foreground"
+      >
+        <div className="flex items-center gap-2 ">
+          <BiHeart /> {!post?.likes?.length ? "0" : post?.likes?.length}{" "}
+          Curtidas
+        </div>
+      </button>
+    );
+  } */
+
   const isUserLiked = post?.likes?.some((like: any) => like.userId === userId);
 
   return (

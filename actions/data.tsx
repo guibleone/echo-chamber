@@ -45,26 +45,26 @@ export const fetchSinglePost = async (id: string) => {
 };
 
 export const fetchPosts = async (page: number) => {
-    const response = await db.post.findMany({
-      include: {
-        author: true,
-        likes: true,
-        comments: true,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-      skip: (page - 1) * 10,
-      take: 10,
-    });
+  const response = await db.post.findMany({
+    include: {
+      author: true,
+      likes: true,
+      comments: true,
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+    skip: (page - 1) * 10,
+    take: 10,
+  });
 
-    if (response.length === 0) {
-      return [];
-    }
+  if (response.length === 0) {
+    return [];
+  }
 
-    return response.map((item: any, index: number) => (
-      <PostCard key={index} post={item} index={index} />
-    ));
+  return response.map((item: any, index: number) => (
+    <PostCard key={index} post={item} index={index} />
+  ));
 };
 
 export const fetchComments = async (postId: string, page: number) => {
@@ -89,4 +89,39 @@ export const fetchComments = async (postId: string, page: number) => {
   return response.map((item: any, index: number) => (
     <CommentCard key={index} comment={item} index={index} />
   ));
+};
+
+// pesquisa por pessoas, posts e tags
+
+export const fetchSearchResults = async (query: string) => {
+  const posts = await db.post.findMany({
+    where: {
+      OR: [
+        {
+          content: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },  
+      ],
+    },
+  });
+
+  const users = await db.user.findMany({
+    where: {
+      OR: [
+        {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+  });
+
+  return {
+    posts,
+    users,
+  };
 };

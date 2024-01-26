@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import React, { useEffect } from "react";
 import { useFormState, useFormStatus } from "react-dom";
-import { toast, useToast } from "@/components/ui/use-toast"
+import { toast } from "@/components/ui/use-toast"
 
 
 function Submit({ session }: { session: any }) {
