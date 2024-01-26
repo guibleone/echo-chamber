@@ -24,7 +24,7 @@ const links = [
   },
 ];
 
-export default async function Navbar({ query }: { query?: string  }) {
+export default async function Navbar({ query }: { query?: string }) {
   const session = await auth();
   const user = session?.user;
 
@@ -53,6 +53,7 @@ export default async function Navbar({ query }: { query?: string  }) {
 
           <div className="flex gap-3">
             <Search posts={posts} users={users} />
+            <DarkModeButton />
             {!user ? (
               <Button size={"sm"} asChild>
                 <Link href="/login">Entrar</Link>
@@ -65,7 +66,7 @@ export default async function Navbar({ query }: { query?: string  }) {
                     <AvatarFallback>NM</AvatarFallback>
                   </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent>
+                <DropdownMenuContent className="mr-5 md:mr-0">
                   <DropdownMenuItem className="w-full">
                     <Link href={`/user/${user.id}`}>
                       <div className="flex gap-2 items-center">
@@ -80,8 +81,6 @@ export default async function Navbar({ query }: { query?: string  }) {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-
-            <DarkModeButton />
           </div>
         </div>
       </MaxWidthWrapper>

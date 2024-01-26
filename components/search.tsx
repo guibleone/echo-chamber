@@ -19,7 +19,7 @@ export default function Search({ posts, users }: { posts: any; users: any }) {
   return (
     <Dialog>
       <DialogTrigger className="flex items-center gap-2 border rounded-lg px-2 text-sm">
-        Pesquisar <SearchIcon size={20} />
+        <span className="hidden sm:block">Pesquisar</span> <SearchIcon size={20} />
       </DialogTrigger>
       <DialogContent className="max-w-[330px] sm:max-w-lg">
         <DialogHeader>
