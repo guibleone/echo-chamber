@@ -44,7 +44,7 @@ export const fetchSinglePost = async (id: string) => {
   }
 };
 
-export const fetchPosts = async (page: number) => {
+export const fetchPosts = async (page: number, orderByLikes: boolean) => {
   const response = await db.post.findMany({
     include: {
       author: true,
@@ -52,7 +52,8 @@ export const fetchPosts = async (page: number) => {
       comments: true,
     },
     orderBy: {
-      createdAt: "desc",
+      likes: orderByLikes ? { _count: "desc" } : undefined,
+      createdAt: orderByLikes ? undefined : "desc",
     },
     skip: (page - 1) * 10,
     take: 10,
@@ -102,7 +103,7 @@ export const fetchSearchResults = async (query: string) => {
             contains: query,
             mode: "insensitive",
           },
-        },  
+        },
       ],
     },
   });

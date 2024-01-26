@@ -6,13 +6,14 @@ export default function Home({
 }: {
   searchParams: { [key: string]: string | string[] | undefined };
 }) {
-
   const query = searchParams.query?.toString() || "";
+
+  const orderBy = searchParams.orderBy?.toString() === "likes" ? true : false;
 
   return (
     <main>
       <Navbar query={query} />
-      <Posts />
+      <Posts orderBy={orderBy} />
     </main>
   );
 }

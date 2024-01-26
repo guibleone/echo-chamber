@@ -11,6 +11,7 @@ import { User, SearchIcon } from "lucide-react";
 import SeacrhInput from "./search-input";
 import { useRouter } from "next/navigation";
 import { FaNewspaper } from "react-icons/fa";
+import { ScrollArea } from "./ui/scroll-area";
 
 export default function Search({ posts, users }: { posts: any; users: any }) {
   const router = useRouter();
@@ -36,11 +37,11 @@ export default function Search({ posts, users }: { posts: any; users: any }) {
           )}
 
           {users.length !== 0 && (
-            <>
+          <ScrollArea className="h-[180px] w-full rounded-t-md border p-4">
               <h2 className="text-start">Pessoas</h2>
               {users?.map((user: any) => (
                 <button
-                  className="flex gap-2 w-full text-sm text-white mt-2 hover:bg-stone-700 hover:cursor-pointer py-4 rounded-lg"
+                  className="flex gap-2 w-full text-sm text-white mt-2 hover:bg-stone-700 hover:cursor-pointer py-2 rounded-lg"
                   key={user.id}
                 >
                   <User size={20} />
@@ -49,16 +50,17 @@ export default function Search({ posts, users }: { posts: any; users: any }) {
                   </div>
                 </button>
               ))}
-            </>
+            </ScrollArea>
           )}
 
+
           {posts.length !== 0 && (
-            <>
+              <ScrollArea className="h-[180px] w-full rounded-b-md border p-4">
               <h2 className="text-start">Posts</h2>
               {posts?.map((post: any) => (
                 <button
                   onClick={() => router.push(`/posts/${post.id}`)}
-                  className="flex gap-2 w-full text-sm text-white mt-2 hover:bg-stone-700 hover:cursor-pointer py-4 rounded-lg"
+                  className="flex gap-2 w-full text-sm text-white mt-2 hover:bg-stone-700 hover:cursor-pointer py-2 rounded-lg"
                   key={post.id}
                 >
                   <FaNewspaper size={20} />
@@ -67,7 +69,7 @@ export default function Search({ posts, users }: { posts: any; users: any }) {
                   </div>
                 </button>
               ))}
-            </>
+            </ScrollArea>
           )}
         </DialogDescription>
       </DialogContent>

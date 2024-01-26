@@ -6,6 +6,7 @@ import { useSession } from "next-auth/react";
 
 import { State, createPost } from "@/actions/posts";
 import { useFormState, useFormStatus } from "react-dom";
+import { Textarea } from "./ui/textarea";
 
 export function Submit({ session }: { session: any }) {
   const { pending } = useFormStatus();
@@ -34,9 +35,8 @@ export default function CreatePost() {
 
   return (
     <form className="border-b py-6 flex flex-col" action={dispatch}>
-      <Input
-        className="w-full px-4 py-2"
-        type="text"
+      <Textarea
+        className="w-full px-4 py-2 resize-y"
         placeholder="Progamando o que hoje ?"
         name="content"
       />
