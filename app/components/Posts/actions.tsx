@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BiConversation, BiHeart } from "react-icons/bi";
 import {
   Dialog,
@@ -79,7 +79,9 @@ export default function Actions({ post }: { post: any }) {
 function Submit({ post, userId }: { post: any; userId: string }) {
   const { pending } = useFormStatus();
 
-/*   if (!userId) {
+  const isUserLiked = post.likes.find((like: any) => like.authorId === userId);
+
+  if (!userId) {
     return (
       <button
         onClick={() => {
@@ -96,9 +98,8 @@ function Submit({ post, userId }: { post: any; userId: string }) {
         </div>
       </button>
     );
-  } */
-
-  const isUserLiked = post?.likes?.some((like: any) => like.userId === userId);
+    
+  }
 
   return (
     <button
